@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int mx = 10000000;
+const int mx = 100000000;
 bool ip[mx];
 
 void prime()
@@ -39,25 +39,29 @@ int main(int argc, char* argv[])
     ios::sync_with_stdio(false);
 
     prime();
-
-    int n;
-    while(cin>>n)
+    for(int i=1; i<=mx; i++)
     {
-        cout<<n;
-        if(ip[rev(n)])
-        {
-            cout<<" is emirp.";
-        }
-        else if(ip[n])
-        {
-            cout<<" is prime.";
-        }
-        else
-        {
-            cout<<" is not prime.";
-        }
-        cout<<endl;
-    }   
+        if(ip[i])
+            cout<<i<<endl;
+    }
+    // int n;
+    // while(cin>>n)
+    // {
+    //     cout<<n;
+    //     if(ip[rev(n)])
+    //     {
+    //         cout<<" is emirp.";
+    //     }
+    //     else if(ip[n])
+    //     {
+    //         cout<<" is prime.";
+    //     }
+    //     else
+    //     {
+    //         cout<<" is not prime.";
+    //     }
+    //     cout<<endl;
+    // }   
     
     return 0;
 }
