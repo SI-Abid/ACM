@@ -21,20 +21,23 @@ typedef pair<ll, ll> pll;
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
 
-void printAll(int i, int n)
+void printAll(int l, int n)
 {
-    // vi divs(n + 1, 0);
-    for (int j = i; j * j <= n; j++)
+    vi v;
+    for(int i=1; i*i<=n; i++)
     {
-        if (n % j == 0)
+        if(n%i == 0)
         {
-            cout << j << " ";
-            if (n / j != j)
-            {
-                cout << n / j << " ";
-            }
+            v.pb(i);
+            if(i*i != n)
+                v.pb(n/i);
         }
     }
+    sort(all(v));
+    for(auto x: v)
+        if(x>l)
+            cout << " " << x;
+    
     cout << endl;
 }
 int main(int argc, char *argv[])
@@ -51,19 +54,15 @@ int main(int argc, char *argv[])
     {
         int n, k;
         cin >> n >> k;
-        int rem = n - k;
-        cout << "Case " << tc++ << ": ";
-        if (k > rem)
+        cout << "Case " << tc++ << ":";
+        if (k*2>=n)
         {
-            cout << "impossible\n";
-        }
-        else if (k == 0)
-        {
-            printAll(1, rem);
+            cout << " impossible\n";
         }
         else
         {
-            printAll(2, rem);
+            int ate = n - k;
+            printAll(k, ate);
         }
     }
 
