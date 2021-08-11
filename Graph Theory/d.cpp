@@ -38,11 +38,9 @@ int main(int argc, char* argv[])
     while(cin >> r >> c)
     {
         if(r == 0 and c == 0) break;
-        memset(grid, false, sizeof grid);   // bomb every cell
-        for (int i = 0; i < r; i++)
-            for (int j = 0; j < c; j++)     
-                grid[i][j] = true;          // safe inside the border
+        memset(grid, false, sizeof grid);   
         memset(vis, false, sizeof vis);
+
         int br; cin>>br;
         while(br--)
         {
@@ -52,37 +50,47 @@ int main(int argc, char* argv[])
             while(bc--)
             {
                 cin>>col;
-                grid[row][col] = false;     // mark as bomb
+                grid[row][col] = true;     // mark as bomb
             }
         }
+
         int sx, sy, ex, ey;
         cin >> sx >> sy >> ex >> ey;
         
         int dist = 0;
-
+        int lvl[r+2][c+2];
         queue<pii> q;
+
         q.push(mp(sx, sy));
+        lvl[sx][sy] = 0;
         vis[sx][sy] = true;
+
         while(!q.empty())
         {
             pii now = q.front();
             q.pop();
+
             if(now.F == ex && now.S == ey)
+            {
                 break;
+            }
             for(int i = 0; i < 4; i++)
             {
                 int nx = now.F + dx[i];
                 int ny = now.S + dy[i];
-                if(nx >= 0 && nx < r && ny >= 0 && ny < c && grid[nx][ny] && !vis[nx][ny])
+
+                if(nx >= 0 && nx < r && ny >= 0 && ny < c && !grid[nx][ny] && !vis[nx][ny])
                 {
                     vis[nx][ny] = true;
                     q.push(mp(nx, ny));
-                    dist++;
+                    lvl[nx][ny] = lvl[now.F][now.S] + 1;
                 }
             }
         }
+
+        cout << lvl[ex][ey] << endl;
+
         q.empty();
-        cout << dist << endl;
     }
     
     return 0;
