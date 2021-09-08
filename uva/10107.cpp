@@ -29,19 +29,21 @@ int main(int argc, char* argv[])
     if(argc == 3) freopen(argv[2], "w", stdout);
     ios::sync_with_stdio(false);
 
-    vi v;
+    vector<int> v;
     int n;    
     while (cin>>n)
     {
-        v.pb(n);
-        sort(all(v));
-        if(v.size()&1)
+        v.push_back(n);
+        sort(v.begin(),v.end());
+        if(v.size()%2==1)   // if array size odd
         {
-            cout<<v[v.size()/2]<<endl;
+            int mid = v.size()/2;
+            cout<<v[mid]<<endl;
         }
-        else
+        else                // if even size
         {
-            cout<<(v[v.size()/2-1]+v[v.size()/2])/2<<endl;
+            int mid = v.size()/2;
+            cout<<(v[mid-1]+v[mid])/2<<endl;
         }
     }
     
