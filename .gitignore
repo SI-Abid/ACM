@@ -1,3 +1,5 @@
 *.b
 .vscode
 *.class
+in
+out
