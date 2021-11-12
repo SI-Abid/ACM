@@ -3,9 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${default}",
-                "/usr/include/x86_64-linux-gnu/c++/10",
-                "/usr/include/c++/10"
+                "${default}"
             ],
             "defines": [],
             "cStandard": "gnu17",
