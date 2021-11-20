@@ -22,6 +22,7 @@ void grid(int a, int b)
 			// visited[x][y]=true;
 			if(v[x][y]=='1')
             {
+                printf("found at %d %d\n", x, y);
                 cnt++;
 				grid(x, y);
             }
@@ -34,9 +35,10 @@ int main()
 {
 	int t;
     cin>>t;
-    cin.ignore();
+    // cin.ignore();
     while(t--)
     {
+        scanf("\n");
         string s;
         while(cin>>s)
         {
@@ -56,9 +58,10 @@ int main()
                     visited[i][j]=true;
                     if(v[i][j]=='1')
                     {
-                        cnt=1;
+                        cnt=0;
                         grid(i,j);
                         count=max(cnt,count);
+                        cout<<cnt<<endl;
                     }
                 }
             }
