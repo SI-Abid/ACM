@@ -1,28 +1,69 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <map>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <list>
+#include <set>
+#include <cmath>
+#include <cstring>
+ 
+#include <stdio.h>
+#include <string.h>
+#include <sstream>
+#include <stdlib.h>
+#include <vector>
+#include <iomanip>
+#include <ctime>
+ 
 using namespace std;
 
 int dx[] = {0, 0, 1, -1};
 int dy[] = {1, -1, 0, 0};
-
+priority_queue<pair<long long int, pair<int, int> > > pq;
+long long int dis[1005][1005];
 long long int graph[1005][1005];
 
-void grid(int n, int m, int i, int j)
+void dijkstra2d(int n, int m)
 {
-    for(int i = 1; i <= n; i++)
-    {   
-        for(int j = 1; j <= m; j++)
+    for(int ii = 1; ii <= n; ii++)
+    {
+        for(int jj = 1; jj <= m; jj++)
         {
-            vector<long long int> dis;
-            for (int k = 0; k < 4; k++)
+            dis[ii][jj] = 1e18;
+        }
+    }
+    // dis[1][1] = 0;
+    // pq.push({, {1, 1}});
+    pq.push({-graph[1][1], {1, 1}});
+    dis[1][1] = graph[1][1];
+    
+    while(pq.size())
+    {
+        pair<long long int, pair<int, int> > p = pq.top();
+        pq.pop();
+        int x = p.second.first;
+        int y = p.second.second;
+        long long int val = -p.first;
+        
+        for(int k = 0; k < 4; k++)
+        {
+            int a = x + dx[k];
+            int b = y + dy[k];
+            
+            if(a < 1 || a > n || b < 1 || b > m)
+                continue;
+            
+            // puts("{}");
+            long long int cost = val + graph[a][b];
+            // printf("%lld %d %d\n", cost, a, b);
+            if(cost < dis[a][b])
             {
-                int x = i + dx[k];
-                int y = j + dy[k];
-                if (x >= 1 && x <= n && y >= 1 && y <= m)
-                {
-                    dis.push_back(graph[i][j] + graph[x][y]);
-                }
+                // puts("[][]");
+                dis[a][b] = cost;
+                pq.push({-cost, {a, b}});
             }
-            graph[i][j] = *min_element(dis.begin(), dis.end());
         }
     }
 }
@@ -42,8 +83,24 @@ int main()
                 cin>>graph[i][j];
             }
         }
-        grid(n, m, 1, 1);
-        cout << graph[n][m] << endl;
+        dijkstra2d(n, m);
+        cout << dis[n][m] << endl;
+        // for(int ii = 1; ii <= n; ii++)
+        // {
+        //     for(int jj = 1; jj <= m; jj++)
+        //     {
+        //         cout<<dis[ii][jj]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
+        // for(int ii = 1; ii <= n; ii++)
+        // {
+        //     for(int jj = 1; jj <= m; jj++)
+        //     {
+        //         cout<<graph[ii][jj]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
     }
 
     return 0;
