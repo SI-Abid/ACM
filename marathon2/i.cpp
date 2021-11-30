@@ -57,7 +57,8 @@ int main(int argc, char const *argv[])
             //cout<<lift[i].cost<<" ";
         }
         //cout<<endl;
-        getchar();getchar();
+        // getchar();getchar();
+        cin.ignore();
         for(int i=0;i<n;i++)
         {
 //https://stackoverflow.com/questions/21594533/c-extract-int-from-string-using-stringstream
