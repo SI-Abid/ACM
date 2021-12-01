@@ -38,14 +38,8 @@ int main(int argc, char* argv[])
         int x;
         cin>>x;
         if(x%2!=0)
-        for(int j=2; j<10000; j+=2)
-        {
-            if(x%j!=0)
-            {
-                a.pb(x-j);
-                break;
-            }
-        }
+           a.pb(x-2);
+        
         else
         for(int j=3; j<10000; j+=2)
         {
