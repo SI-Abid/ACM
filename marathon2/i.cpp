@@ -36,6 +36,25 @@ void clear(int n)
     flr.resize(100);
 }
 
+bool isprime[MX+5];
+vector<ll>prime;
+void sieve()
+{
+    for(int i=0; i<MX; i++)
+        isprime[i]=true;
+    isprime[0]=false,isprime[1]=false;
+
+    for(int i=0; i<MX; i++)
+    {
+        if(isprime[i])
+        {
+            prime.pb(i);
+            for(int j=i*2; j<MX; j+=i)
+                isprime[j]=false;
+        }
+    }
+}
+
 int main(int argc, char const *argv[])
 {
     if (argc == 2 or argc == 3)
@@ -58,6 +77,7 @@ int main(int argc, char const *argv[])
         }
         //cout<<endl;
         // getchar();getchar();
+
         cin.ignore();
         for(int i=0;i<n;i++)
         {
