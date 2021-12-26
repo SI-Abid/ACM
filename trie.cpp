@@ -1,9 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Node
+struct Node
 {
-public:
     bool end;
     Node *next[26];
     Node()
