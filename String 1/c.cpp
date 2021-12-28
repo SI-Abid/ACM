@@ -126,7 +126,7 @@ void solve()
         cout<<hash_pat[j]<<endl;
     }
 
-    cout<<"***  "<<ans<<endl;
+    cout<<"*****"<<ans<<endl;
 }
 
 int main(int argc, char* argv[])
