@@ -10,20 +10,11 @@ void build(string pat, int size)
     for(int i=1; i<size; i++)
     {
         int j=failure[i-1];
-        while (true)
-        {
-            if(pat[j]==pat[i])
-            {
-                failure[i]=j+1;
-                break;        
-            }
-            if(j==0)
-            {
-                failure[i]=0;
-                break;
-            }
-            j=failure[j];
-        }
+        while (j>0 && pat[i]!=pat[j])
+            j=failure[j-1];
+        if(pat[i]==pat[j])
+            j++;
+        failure[i]=j;
     }
 }
 
@@ -37,7 +28,7 @@ int main()
 
     for (int i = 0; i <= n; i++)
     {
-        cout<<i<<" "<<failure[i]*2<<endl;
+        cout<<i<<" "<<failure[i]<<endl;
         if(failure[i])
             cnt++;
     }
