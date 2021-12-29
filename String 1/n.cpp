@@ -1,38 +1,54 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-int failure[100000];
+const int N = 1e5 + 5;
 
-void build(string pat, int size)
+int failure[N], r[N], dp[N];
+
+void build(string str, int n)
 {
-    failure[0]=0;
+    int k = 0;
 
-    for(int i=1; i<size; i++)
+    for (int i = 2; i <= n; i++)
     {
-        int j=failure[i-1];
-        while (j>0 && pat[i]!=pat[j])
-            j=failure[j-1];
-        if(pat[i]==pat[j])
-            j++;
-        failure[i]=j;
+        while (k && str[i] != str[k + 1])
+            k = failure[k];
+
+        if (str[i] == str[k + 1])
+            k++;
+        failure[i] = k;
     }
 }
 
 int main()
 {
     string s;
-    cin>>s;
-    int n=s.size();
-    build(s,n);
-    int cnt=0;
+    cin >> s;
+    int n = s.size();
 
-    for (int i = 0; i <= n; i++)
+    build(" " + s, n);
+
+    int c = 0;
+    for (int i = failure[n]; i; i = failure[i])
     {
-        cout<<i<<" "<<failure[i]<<endl;
-        if(failure[i])
-            cnt++;
+        r[c++] = i;
     }
-    
-    cout<<cnt<<endl;
+
+    memset(dp, 0, sizeof(dp));
+
+    for (int i = n; i; i--)
+    {
+        dp[failure[i]] += ++dp[i];
+    }
+
+    cout << c + 1 << endl;
+
+    for (int i = c - 1; i >= 0; i--)
+    {
+        cout << r[i] << " " << dp[r[i]] << endl;
+    }
+
+    cout << n << " " << dp[n] << endl;
+
     return 0;
 }

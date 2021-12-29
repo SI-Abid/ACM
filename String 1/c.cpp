@@ -23,108 +23,112 @@ typedef pair<ll, ll> pll;
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
 
-ll hash_2d[1001][1001];
-ll hash_pat[101];
-ll p = 31;
-ll mod = 1e9 + 7;
-ll inverse_p[1001];
+#define d 31
+#define mod 3803
 
-int binPow(ll x, ll n)
+int *hash_b;
+int **hash_a;
+int *mul;
+
+// Function to return the modular inverse
+// using Fermat's little theorem
+int mi(int x)
 {
-    if (n == 0)
-        return 1;
-    ll res = binPow(x, n / 2);
-    if (n & 1)
-        return (res * res * x) % mod;
-    else
-        return (res * res) % mod;
+    int p = mod - 2;
+    int s = 1;
+    while (p != 1)
+    {
+        if (p % 2 == 1)
+            s = (s * x) % mod;
+        x = (x * x) % mod;
+        p /= 2;
+    }
+
+    return (s * x) % mod;
 }
 
-ll sub_hash(ll hashi, ll hashj, ll pi)
+// Function to generate hash
+void genHash(vector<string>a, vector<string>b)
 {
-    ll ans = (hashj - hashi) % mod;
-    ll temp = binPow(pi, mod - 2);
-    return (ans * temp) % mod;
+    // To store prefix-sum
+    // of rolling hash
+    hash_a = new int[a.size()];
+    for(int i=0;i<a.size();i++)
+        hash_a[i] = new int[a[0].size()];
+
+    // Multiplier for different values of i
+    mul = new int[a.size()];
+
+    hash_b = new int[b.size()];
+
+    // Generating hash value for string b
+    for(int k=0;k<b.size();k++)
+        for (int i = b.size() - 1; i >= 0; i--)
+            hash_b[k] = (hash_b[k] * d + (b[k][i] - 97)) % mod;
+
+    // Generating prefix-sum of hash of a
+    mul[0] = 1;
+    hash_a[0] = (a[0] - 97) % mod;
+    for(int k=0;k<a.size();k++)
+        for (int i = 1; i < a[0].size(); i++)
+        {
+            mul[i] = (mul[i - 1] * d) % mod;
+            hash_a[k][i] = (hash_a[k][i - 1] + mul[i] * (a[k][i] - 97)) % mod;
+        }
+}
+
+void init()
+{
+    hash_a = NULL;
+    
+    mul = NULL;
+    hash_b = 0;
+}
+
+bool checkEqual(int i, int len_a, int len_b)
+{
+    // To store hash of required
+    // sub-string of A
+    int x;
+
+    // If i = 0 then
+    // requires hash value
+    if (i == 0)
+        x = hash_a[len_b - 1];
+
+    // Required hash if i != 0
+    else
+    {
+        x = (hash_a[i + len_b - 1] - hash_a[i - 1] + 2 * mod) % mod;
+        x = (x * mi(mul[i])) % mod;
+    }
+
+    // Comparing hash with hash of B
+    if (x == hash_b)
+        return true;
+
+    return false;
 }
 
 void solve()
 {
-    // ll pp;
-    int n, m, x, y;
+    init();
 
-    cin >> n >> m;
-    vector<string> s(n);
-    for (int i = 0; i < n; i++)
-        cin >> s[i];
+    string a = "abcbcdcdeabbc";
+    string b = "ab";
 
-    cin >> x >> y;
-    vector<string> pat(x);
-    for (int i = 0; i < x; i++)
-        cin >> pat[i];
+    int n, m;
+    n = a.size();
+    m = b.size();
 
-
-    ll ans = 0;
-    vll pp(n);
-    pp[0] = 1;
-    for (int i = 1; i < n; i++)
+    genHash(a, b);
+    int cnt = 0;
+    for (int i = 0; i <= n - m; i++)
     {
-        pp[i] = (pp[i - 1] * p) % mod;
+        if (checkEqual(i, n, m))
+            cnt++;
     }
-
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            hash_2d[i + 1][j + 1] = (hash_2d[i + 1][j] + (s[i][j] - 96) * pp[j]) % mod;
-        }
-    }
-
-    for (int i = 0; i < x; i++)
-    {
-        for (int j = 0; j < y; j++)
-        {
-            hash_pat[i + 1] += ((pat[i][j] - 96) * pp[j]) % mod;
-        }
-    }
-
-    for (int i = 0; i < n - x; i++)
-    {
-        for (int j = 0; j < m - y; j++)
-        {
-            bool match = true;
-            int k = i;
-            while (match)
-            {
-                ll suha = sub_hash(hash_2d[k][j], hash_2d[k][j + y], pp[j]);
-                printf("%lld  %lld\n", suha, hash_pat[k]);
-
-                if (suha != hash_pat[k])
-                {
-                    match = false;
-                    // cout << "NO"<<endl;
-                    break;
-                }
-                k++;
-            }
-            if (match)
-                ans++;
-        }
-    }
-    for (int i = 0; i <= n; i++)
-    {
-        for (int j = 0; j <= m; j++)
-        {
-            cout << hash_2d[i][j] << " ";
-        }
-        cout << endl;
-    }
-
-    for (int j = 0; j <= x; j++)
-    {
-        cout << hash_pat[j] << endl;
-    }
-
-    cout << "*****" << ans << endl;
+    printf("Total %d matches found\n", cnt);
 }
 
 int main(int argc, char *argv[])
@@ -135,7 +139,7 @@ int main(int argc, char *argv[])
         freopen(argv[2], "w", stdout);
     ios::sync_with_stdio(false);
 
-    freopen("in", "r", stdin);
+    // freopen("in", "r", stdin);
 
     int t;
     cin >> t;
