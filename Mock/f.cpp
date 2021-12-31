@@ -1,20 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int min_window(string s, string t)
+int min_window(string s, string t, vector<int> &m)
 {
-    int m[256] = {0};
-
     int ans = INT_MAX;
-    int start = 0;
-    int count = 0;
-
-    for (int i = 0; i < t.length(); i++)
-    {
-        if (m[t[i]] == 0)
-            count++;
-        m[t[i]]++;
-    }
+    int count = t.size();
 
     int i = 0;
     int j = 0;
@@ -32,7 +22,7 @@ int min_window(string s, string t)
                 if (ans > j - i + 1)
                 {
                     ans = min(ans, j - i + 1);
-                    start = i;
+                    // cout<<i<<" "<<j<<" "<<ans<<endl;
                 }
                 m[s[i]]++;
                 if (m[s[i]] > 0)
@@ -54,16 +44,16 @@ int main()
 {
     string s;
     cin >> s;
-    int chars[26] = {0};
+    vector<int> chars(256,0);
     string pat = "";
     for (int i = 0; i < s.size(); i++)
     {
-        if (chars[s[i] - 'a'] == 0)
+        if (chars[s[i]] == 0)
         {
-            chars[s[i] - 'a'] = 1;
+            chars[s[i]] = 1;
             pat += s[i];
         }
     }
-    cout << min_window(s, pat) << endl;
+    cout << min_window(s, pat, chars) << endl;
     return 0;
 }
