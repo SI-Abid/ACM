@@ -16,7 +16,7 @@ using namespace std;
 #define all(x) (x).begin(),(x).end()
 #define out cout<<setprecision(20)
 #define rep(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
-#define what_is(x) cout << #x << " is " << x << " | ";
+#define what_is(x) cout << #x << " is " << x << endl;
 #define error(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); err(_it, args); }
 void err(istream_iterator<string> it) {}
 template<typename T, typename... Args>
@@ -31,30 +31,22 @@ typedef pair<ll, ll> pll;
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
 
-vector<int> adj[100005];
-vector<int> reach(100005);
-bool visited[100005];
-
-void dfs(int u)
+vi prime_factor(int n)
 {
-    visited[u] = true;
-    reach[u]++;
-    for (int v : adj[u])
+    vi res;
+    for (int i = 2; i * i <= n; i++)
     {
-        if (!visited[v])
+        while (n % i == 0)
         {
-            dfs(v);
+            res.pb(i);
+            n /= i;
         }
     }
-}
-
-void clear()
-{
-    for (int i = 0; i < 100005; i++)
+    if (n != 1)
     {
-        adj[i].clear();
-        reach[i] = 0;
+        res.pb(n);
     }
+    return res;
 }
 
 int main(int argc, char* argv[])
@@ -66,34 +58,10 @@ int main(int argc, char* argv[])
     int t;cin>>t;
     rep(c,1,t+1)
     {
-        clear();
-        int k,n,m;
-        cin>>k>>n>>m;
-        vector<int> people(k);
-        for(int i=0;i<k;i++)
-        {
-            cin>>people[i];
-        }
-        for(int i=0;i<m;i++)
-        {
-            int a,b;
-            cin>>a>>b;
-            adj[a].pb(b);
-        }
-        for(int x:people)
-        {
-            memset(visited,0,sizeof(visited));
-            dfs(x);
-        }
-        int ans=0;
-        for(int i=1;i<=n;i++)
-        {
-            if(reach[i]==k)
-            {
-                ans++;
-            }
-        }
-        cout<<"Case "<<c<<": "<<ans<<endl;
+        int s,n;cin>>s>>n;
+        vi pf = prime_factor(s);
+        
     }
+
     return 0;
 }
