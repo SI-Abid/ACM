@@ -28,31 +28,6 @@ vector<int> adj[100005];
 int vis[100005];
 int cnt, cnt1;
 
-// level of a tree
-// void bfs(int s)
-// {
-//     queue<int> q;
-//     q.push(s);
-//     vis[s] = GREEN;
-
-//     while (!q.empty())
-//     {
-//         int u = q.front();
-//         q.pop();
-//         for (int v : adj[u])
-//         {
-//             if (!vis[v])
-//             {
-//                 if (vis[u] == GREEN)
-//                     vis[v] = BLUE, cnt++;
-//                 else
-//                     vis[v] = GREEN, cnt1++;
-//                 q.push(v);
-//             }
-//         }
-//     }
-// }
-
 void dfs(int u, int col)
 {
     vis[u] = col;
