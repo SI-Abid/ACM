@@ -76,7 +76,6 @@ int main(int argc, char* argv[])
                 auto [a,b] = q.front();
                 // cout<<a<<" "<<b<<" "<<dist<<endl;
                 q.pop();
-                temp++;
                 
                 if(grid[a][b]=='h')
                 {
@@ -94,6 +93,7 @@ int main(int argc, char* argv[])
                             q.push({nx,ny});
                     }
                 }
+                temp++;
             }
             dist=min(dist,temp);
             ans.pb(dist);
