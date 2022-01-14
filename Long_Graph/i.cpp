@@ -35,6 +35,8 @@ const int INF = 1e9;
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
 bool visited[100][100];
+pii parent[100][100];
+int level[100][100];
 
 int main(int argc, char* argv[])
 {
@@ -48,60 +50,62 @@ int main(int argc, char* argv[])
         int row,col;
         cin>>row>>col;
         char grid[row][col];
-        vpii girls(3);
+        // vpii girls(3);
+        int sx,sy;
         rep(i,0,row)
         {
             rep(j,0,col)
             {
                 cin>>grid[i][j];
-                if(grid[i][j] == 'a' or grid[i][j] =='b' or grid[i][j]=='c')
-                {
-                    girls[grid[i][j]-'a']={i,j};
-                    grid[i][j]='.';
-                }
+                if(grid[i][j] == 'h')
+                    sx=i,sy=j;
             }
         }
-        vi ans;
-        int dist;
-        for(auto [x,y] : girls)
+
+        memset(visited,0,sizeof(visited));
+        memset(parent,-1,sizeof(parent));
+        memset(level,-1,sizeof(level));
+
+        queue<pii> q;
+        q.push({sx,sy});
+        visited[sx][sy]=true;
+        parent[sx][sy]={-1,-1};
+        level[sx][sy]=0;
+        int dist=1;
+
+        while(!q.empty())
         {
-            dist=1000;
-            memset(visited,0,sizeof visited);
-            queue<pii> q;
-            q.push({x,y});
-            visited[x][y]=1;
-            int temp=0;
-            while(!q.empty())
+            pii cur=q.front();
+            q.pop();
+            if(grid[cur.F][cur.S]=='a' or grid[cur.F][cur.S]=='b' or grid[cur.F][cur.S]=='c')
             {
-                auto [a,b] = q.front();
-                // cout<<a<<" "<<b<<" "<<dist<<endl;
-                q.pop();
-                
-                if(grid[a][b]=='h')
-                {
-                    // dist=min(dist,temp);
-                    break;
-                }
-                for(int i=0;i<4;i++)
-                {
-                    int nx=a+dx[i];
-                    int ny=b+dy[i];
-                    if(nx>=0 and nx<row and ny>=0 and ny<col and !visited[nx][ny])
-                    {
-                        visited[nx][ny]=1;
-                        if(grid[nx][ny]=='.')
-                            q.push({nx,ny});
-                    }
-                }
-                temp++;
+                dist=max(dist,level[cur.F][cur.S]);
+                // continue;
             }
-            dist=min(dist,temp);
-            ans.pb(dist);
-        }
-        cout << "Case " << c << ": ";
-        for(auto x : ans)
-            cout << x << " ";
-        cout << endl;
+            rep(i,0,4)
+            {
+                int nx=cur.F+dx[i], ny=cur.S+dy[i];
+                if(nx>=0 and nx<row and ny>=0 and ny<col and !visited[nx][ny])
+                {
+                    visited[nx][ny]=true;
+                    parent[nx][ny]={cur.F,cur.S};
+                    level[nx][ny]=level[cur.F][cur.S]+1;
+                    if(grid[nx][ny]!='#' and grid[nx][ny]!='m')
+                        q.push({nx,ny});
+                }
+            }
+        }/* 
+        rep(i,0,row)
+        {
+            rep(j,0,col)
+                // cout<<parent[i][j].F<<" "<<parent[i][j].S<<" | ";
+                // cout<<level[i][j]<<" ";
+            cout<<endl;
+        } */
+        cout << "Case " << c << ": "<< dist << endl;
+        // for(auto x : ans)
+        //     cout << x << " ";
+        // cout << endl;
     }
 
     return 0;

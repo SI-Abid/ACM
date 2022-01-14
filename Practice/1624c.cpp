@@ -31,39 +31,49 @@ typedef pair<ll, ll> pll;
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
 
-bool colide(pii a, pii b)
-{
-    return (b.F >= a.F and b.F <= a.S) or (b.S >= a.F and b.S <= a.S) or(b.F <= a.F and b.S >= a.S);
-}
-
 int main(int argc, char* argv[])
 {
     if(argc == 2 or argc == 3) freopen(argv[1], "r", stdin);
     if(argc == 3) freopen(argv[2], "w", stdout);
     ios::sync_with_stdio(false);
 
-    int n,m;
-    while(cin>>n>>m)
+    int t;
+    cin>>t;
+    while(t--)
     {
-        if(n+m==0) break;
-        vector<pii> v;
-        int cnt,x,y;
-        rep(i,0,n)
+        int n;
+        cin>>n;
+        vi a(n);
+        rep(i,0,n) cin>>a[i];
+        map<int,int> m;
+        for(auto &x:a)
         {
-            cin>>x>>y>>x>>y;
-            v.pb({x,x+y-1});
-        }
-        rep(i,0,m)
-        {
-            cnt=0;
-            cin>>x>>y;
-            rep(j,0,n)
+            if(x<=n and m[x]==0)
             {
-                if(colide(v[j],{x,x+y-1}))
-                    cnt++;
+                m[x]++;
+                continue;
             }
-            cout<< cnt << endl;
+            while(x>0)
+            {
+                if(x<=n and m[x]==0)
+                {
+                    m[x]++;
+                    break;
+                }
+                x>>=1;
+            }
         }
+        sort(all(a));
+        bool ok=true;
+        rep(i,1,n+1)
+        {
+            if(a[i-1]!=i)
+            {
+                ok=false;
+                break;
+            }
+        }
+        puts(ok?"YES":"NO");
     }
 
     return 0;

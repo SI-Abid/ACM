@@ -31,39 +31,25 @@ typedef pair<ll, ll> pll;
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
 
-bool colide(pii a, pii b)
-{
-    return (b.F >= a.F and b.F <= a.S) or (b.S >= a.F and b.S <= a.S) or(b.F <= a.F and b.S >= a.S);
-}
-
 int main(int argc, char* argv[])
 {
     if(argc == 2 or argc == 3) freopen(argv[1], "r", stdin);
     if(argc == 3) freopen(argv[2], "w", stdout);
     ios::sync_with_stdio(false);
 
-    int n,m;
-    while(cin>>n>>m)
+    int t;cin>>t;
+    while(t--)
     {
-        if(n+m==0) break;
-        vector<pii> v;
-        int cnt,x,y;
-        rep(i,0,n)
-        {
-            cin>>x>>y>>x>>y;
-            v.pb({x,x+y-1});
-        }
-        rep(i,0,m)
-        {
-            cnt=0;
-            cin>>x>>y;
-            rep(j,0,n)
-            {
-                if(colide(v[j],{x,x+y-1}))
-                    cnt++;
-            }
-            cout<< cnt << endl;
-        }
+        int a,b,c;
+        cin>>a>>b>>c;
+        if(2*b-a>0 and (2*b-a)%c==0)
+            puts("YES");
+        else if(2*b-c>0 and (2*b-c)%a==0)
+            puts("YES");
+        else if((a+c)%(2*b)==0)
+            puts("YES");
+        else
+            puts("NO");
     }
 
     return 0;

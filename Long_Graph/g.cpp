@@ -18,6 +18,7 @@ using namespace std;
 #define rep(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define what_is(x) cout << #x << " is " << x << endl;
 #define error(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); err(_it, args); }
+#define pcase(x) cout << "Case " << x << ": ";
 void err(istream_iterator<string> it) {}
 template<typename T, typename... Args>
 void err(istream_iterator<string> it, T a, Args... args) { cerr << *it << " = " << a << endl; err(++it, args...); }
@@ -31,9 +32,38 @@ typedef pair<ll, ll> pll;
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
 
-bool colide(pii a, pii b)
+bool visited[105];
+vi adj[105];
+
+void bfs(int u, int *dist)
 {
-    return (b.F >= a.F and b.F <= a.S) or (b.S >= a.F and b.S <= a.S) or(b.F <= a.F and b.S >= a.S);
+    visited[u] = true;
+    queue<int> q;
+    q.push(u);
+    dist[u] = 0;
+    while(!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+        for(int v : adj[u])
+        {
+            if(!visited[v])
+            {
+                visited[v] = true;
+                dist[v] = dist[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+}
+
+void clear()
+{
+    rep(i,0,105)
+    {
+        adj[i].clear();
+        visited[i] = false;
+    }
 }
 
 int main(int argc, char* argv[])
@@ -42,28 +72,42 @@ int main(int argc, char* argv[])
     if(argc == 3) freopen(argv[2], "w", stdout);
     ios::sync_with_stdio(false);
 
-    int n,m;
-    while(cin>>n>>m)
+    int t;cin>>t;
+    rep(tc,1,t+1)
     {
-        if(n+m==0) break;
-        vector<pii> v;
-        int cnt,x,y;
-        rep(i,0,n)
+        int node,edge;
+        cin>>node>>edge;
+
+        clear();
+
+        rep(i,0,edge)
         {
-            cin>>x>>y>>x>>y;
-            v.pb({x,x+y-1});
+            int u,v;
+            cin>>u>>v;
+            adj[u].pb(v);
+            adj[v].pb(u);
         }
-        rep(i,0,m)
+        int s,t;
+        cin>>s>>t;
+        
+        // clear();
+        int distS[105];
+        distS[s] = 0;
+        bfs(s, distS);
+        
+        memset(visited,0,sizeof(visited));
+
+        int distT[105];
+        distT[t] = 0;
+        bfs(t, distT);
+
+        int ans = 0;
+        rep(i,0,node)
         {
-            cnt=0;
-            cin>>x>>y;
-            rep(j,0,n)
-            {
-                if(colide(v[j],{x,x+y-1}))
-                    cnt++;
-            }
-            cout<< cnt << endl;
+            ans=max(ans, distS[i] + distT[i]);
         }
+        pcase(tc);cout<<ans<<endl;
+        // cout<<ans<<endl;
     }
 
     return 0;
