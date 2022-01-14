@@ -35,6 +35,9 @@ int ans=0;
 
 int dx[]={0,0,1,-1};
 int dy[]={1,-1,0,0};
+int fx[]={1,1,1,1,0,-1,-1,-1};
+int fy[]={1,0,-1,0,1,1,-1,-1};
+
 bool visited[100][100];
 
 void graph(vector<vector<char>> v, int x, int y)

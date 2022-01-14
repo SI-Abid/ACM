@@ -34,8 +34,7 @@ const int INF = 1e9;
 bool prime[2001];
 bool vis[2001];
 int dist[2001];
-int endmark;
-vector<vector<int>> adj;
+vector<int> adj[2001];
 
 void sieve()
 {
@@ -62,24 +61,32 @@ vi prime_factor(int n)
     return res;
 }
 
-int dfs(int parent, int t)
+int bfs(int parent, int t)
 {
-    if (parent == t)
-        return 0;
-
-    if (vis[parent])
-        return dist[parent];
-
+    memset(vis, false, sizeof vis);
+    memset(dist, -1, sizeof dist);
+    queue<int> q;
+    q.push(parent);
     vis[parent] = true;
-
-    if (prime[parent] or parent > t)
-        return 10000;
-
-    for (int factor : adj[parent])
+    dist[parent] = 0;
+    while (!q.empty())
     {
-        dist[parent] = min(dist[parent], 1 + dfs(parent + factor, t));
+        int u = q.front();
+        q.pop();
+        for (int v : adj[u])
+        {
+            int newnode = u+v;
+            if(newnode <=t and vis[newnode] == false)
+            {
+                q.push(newnode);
+                vis[newnode] = true;
+                dist[newnode] = dist[u] + 1;
+                if(newnode == t)
+                    return dist[newnode];
+            }
+        }
     }
-    return dist[parent];
+    return -1;
 }
 
 int main(int argc, char *argv[])
@@ -93,10 +100,9 @@ int main(int argc, char *argv[])
     int t;
     cin >> t;
     sieve();
-    adj.eb();
-    adj.eb();
+    // adj.resize(t+1);
     for (int i = 2; i <= 1050; i++)
-        adj.pb(prime_factor(i));
+        adj[i]=prime_factor(i);
 
     rep(c, 1, t + 1)
     {
@@ -108,17 +114,17 @@ int main(int argc, char *argv[])
         rep(i, 0, 1002)
             dist[i] = 10000;
 
-        cout << "Case " << c << ": ";
-        int ans = dfs(s, n);
+        cout << "Case " << c << ": "<< bfs(s, n) << endl;
+        // int ans = dfs(s, n);
 
-        if (ans >= 10000)
-        {
-            cout << "-1\n";
-        }
-        else
-        {
-            cout << ans << endl;
-        }
+        // if (ans >= 10000)
+        // {
+        //     cout << "-1\n";
+        // }
+        // else
+        // {
+        //     cout << ans << endl;
+        // }
     }
 
     return 0;
