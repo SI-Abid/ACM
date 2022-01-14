@@ -1,10 +1,16 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+char caseSwap(char c)
+{
+    return c^1<<5;
+}
+
 int main()
 {
-    vector<int> v;
-    cout<<v.max_size()<<endl;
+    cout<<caseSwap('a')<<endl;
+    // vector<int> v;
+    // cout<<v.max_size()<<endl;
     // int n;
     // cin>>n;
     // vector<vector<int>> v;
