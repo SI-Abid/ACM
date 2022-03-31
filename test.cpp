@@ -8,7 +8,10 @@ char caseSwap(char c)
 
 int main()
 {
-    cout<<caseSwap('a')<<endl;
+    // pair<pair<int,int>,pair<int,int> > ans;
+    // ans={{4,4},{3,3}};
+    // cout<< ans.first.first<<" "<<ans.first.second<<" "<<ans.second.first<<" "<<ans.second.second<<endl;
+    // cout<<caseSwap('a')<<endl;
     // vector<int> v;
     // cout<<v.max_size()<<endl;
     // int n;

@@ -1,5 +1,6 @@
 *.b
 *.vscode
 *.class
-in
-out
+**/in
+**/out
+*.exe
