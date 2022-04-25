@@ -1,46 +1,39 @@
-#include "bits/stdc++.h"
+#include<bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define ull unsigned long long
-#define pb push_back
-#define mp make_pair
-#define F first
-#define S second
-#define be begin()
-#define en end()
-#define all(x) (x).begin(),(x).end()
-#define out cout<<setprecision(20)
-
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef set<int> si;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
-
-const int MOD = 1e9 + 7;
-const int INF = 1e9;
-
-int main(int argc, char* argv[])
+int prime[1005];
+void build()
 {
-    if(argc == 2 or argc == 3) freopen(argv[1], "r", stdin);
-    if(argc == 3) freopen(argv[2], "w", stdout);
-    ios::sync_with_stdio(false);
-
-    int a, b, c;
-    cin>>a>>b>>c;
-    if(a==b && b==c)
+    prime[0]=prime[1]=1;
+    for(int i=2;i*i<=1000;i++)
     {
-        puts("Equilateral Triangle");
+        if(prime[i]==0)
+        {
+            for(int j=i*i;j<=1000;j+=i)
+            {
+                prime[j]=1;
+            }
+        }
     }
-    else if(a==b || b==c || a==c)
+}
+int main()
+{
+    build();
+    int t;cin>>t;
+    while(t--)
     {
-        puts("Isosceles Triangle");
+        long long n;
+        cin>>n;
+        int p=0;
+        while(n>0)
+        {
+            p+=(n&1);
+            n>>=1;
+        }
+        if(!prime[p])
+            cout<<" Binary prime"<<endl;
+        else
+            cout<<"-1"<<endl;
     }
-    else
-    {
-        puts("Bad Triangle");
-    }
-    
     return 0;
 }
