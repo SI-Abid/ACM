@@ -137,8 +137,10 @@ int main()
     //     }
     //     cout<<"]\n";
     // }
-    cout<<scc[comp.back()].size()<<"\n";
-    for(auto x:scc[comp.back()])
+    vector<int> ans=scc[comp[0]];
+    cout<<ans.size()<<"\n";
+    sort(ans.begin(),ans.end());
+    for(auto x:ans)
     {
         cout<<x<<" ";
     }
