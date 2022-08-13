@@ -115,28 +115,7 @@ int main()
             dfs3(x);
         }
     }
-    ////////////////////////////////////////////////////////////////////
-    // for(int i=0;i<scc.size();i++)
-    // {
-    //     if(scc[i].size()>0)
-    //     {
-    //         cout<<i<<" -> [ ";
-    //         for(auto x:scc[i])
-    //         {
-    //             cout<<x<<" ";
-    //         }
-    //     }
-    //     cout<<"]\n";
-    // }
-    // for(int i=0;i<scc.size();i++)
-    // {
-    //     cout<<i<<" -> [ ";
-    //     for(auto x:adj_scc[i])
-    //     {
-    //         cout<<x<<" ";
-    //     }
-    //     cout<<"]\n";
-    // }
+    
     vector<int> ans=scc[comp[0]];
     cout<<ans.size()<<"\n";
     sort(ans.begin(),ans.end());

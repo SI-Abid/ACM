@@ -1,4 +1,4 @@
-// knuth mo
+// knuth moris pratt algorithm
 #include<bits/stdc++.h>
 using namespace std;
 
