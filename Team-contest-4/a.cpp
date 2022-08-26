@@ -9,21 +9,29 @@
 #define Case(x) cout<<"Case "<<x<<": ";
 #define FastRead ios_base::sync_with_stdio(false);cin.tie(0),cout.tie(0)
 using namespace std;
-ll cost[105],n,maxDis,dp[10005][105];
+ll cost[105],n,maxDis,dp[10005][1005];
+bool vis[1005];
 map< ll, pair< ll,ll > >dis;
 vector< pair< ll,ll > >g[105];
 
 ll rec(ll pos, ll costs){
     if(pos == n+1){
+        cout<<"->"<<costs<<ed;
         if(costs <= maxDis)return 0;
-        else return -1e18;
+        else return 1e18;
     }
 
     if(dp[pos][costs] != -1)return dp[pos][costs];
+    vis[pos] = true;
+    ll ans=INT_MAX;
     for(auto it : g[pos]){
-        dp[pos][costs] = max(rec(it.F, costs), rec(it.F, costs + it.S));
+        if(vis[it.F])continue;
+        ll dist = ceil(sqrt((dis[pos].F - dis[it.F].F)*(dis[pos].F - dis[it.F].F) + (dis[pos].S - dis[it.F].S)*(dis[pos].S - dis[it.F].S)));
+        if(dist+costs<=maxDis){
+            ans = min(ans, (dist*it.S)+ rec(it.F, costs + dist));
+        }
     }
-    return dp[pos][costs];
+    return dp[pos][costs]=ans;
 }
 
 
@@ -40,6 +48,8 @@ int main()
     }
     g[0].pb({n+1,c0});
     g[n+1].pb({0,c0});
+    dis[0] = {x,y};
+    dis[n+1] = {x1,y1};
     cin>>n;
     for(i=1;i<=n;i++){
         ll a,b;
