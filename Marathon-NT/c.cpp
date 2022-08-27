@@ -11,19 +11,23 @@ int main()
     
         int n;
         cin>>n;
-        set<int> a;
+        map<int,int> m;
         for (size_t i = 0; i < n; i++)
         {
             int x;
             cin>>x;
-            a.insert(x);
+            m[x+1]++;
         }
-        int ans=0;
-        for(auto x:a)
+        long long ans=0;
+        for(auto [f,s]:m)
         {
-            ans+=x+1;
+            ans+=(s/f)*f;
+            if(s%f)
+            {
+                ans+=f;
+            }
         }
-        cout<<max(ans,n)<<endl;
+        cout<<ans<<'\n';
     }
     return 0;
 }
