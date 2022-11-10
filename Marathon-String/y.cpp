@@ -1,44 +1,44 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 typedef long long ll;
 int P = 10;
-ll MOD = 1e15;
+ll MOD = 1e9;
 vector<ll> hashes;
 
-ll getHash(string s) 
+ll getHash(string s)
 {
     ll h = 0;
-    for (int i = 0; i < s.size(); i++) {
-        h = (h * P + (s[i]-'1'+1)) % MOD;
+    for (int i = 0; i < s.size(); i++)
+    {
+        h = (h * P + (s[i] - '1' + 1)) % MOD;
     }
     return h;
 }
 ll getHash(ll prev_hash, char c)
 {
-    return (prev_hash * P + (c-'1'+1)) % MOD;
-}
-ll subHash(int i, int j)
-{
-    ll h = hashes[j];
-    if (i > 0) {
-        h = (h - hashes[i-1] * (ll)pow(P, j-i+1)) % MOD;
-        if (h < 0) h += MOD;
-    }
-    return h;
+    return (prev_hash * P + (c - '1' + 1)) % MOD;
 }
 
-ll pow(ll a, ll b)
+ll binPow(ll a, ll b)
 {
     ll res = 1;
-    while (b) {
-        if (b & 1) {
+    while (b)
+    {
+        if (b & 1)
+        {
             res = res * a % MOD;
         }
         a = a * a % MOD;
         b >>= 1;
     }
     return res;
+}
+
+ll subHash(int i, int j)
+{
+    if(i==0) return hashes[j];
+    return (hashes[j] - hashes[i - 1] * binPow(10, j - i + 1) % MOD + MOD) % MOD;
 }
 
 int main()
@@ -51,22 +51,40 @@ int main()
     int n = s.size();
     ll h = 0;
     // hashes.push_back(h);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         h = getHash(h, s[i]);
         hashes.push_back(h);
     }
-    // divide into 3 parts and check if a+b = c
-    for (int i = 0; i < n-1; i++) {
-        for (int j = i+1; j < n-1; j++) {
-            ll a = subHash(0, i);
-            ll b = subHash(i+1, j);
-            ll c = subHash(j+1, n-1);
-            if (a + b == c) {
-                cout << "YES" << endl;
+    int j,k=n-1,mid;
+    for (int i = 0; i < n / 2; i++)
+    {
+        j = i + 1;
+        mid = (j + k) / 2;
+        // if(mid-j+1>k-mid)
+        // {
+        //     mid--;
+        // }
+        ll a, b, c;
+        while(j<=mid)
+        {
+            a = subHash(0, i);
+            b = subHash(j, mid);
+            c = subHash(mid+1, k);
+            // cout<<a<<" "<<b<<" "<<(a+b)%MOD<<" "<<c<<endl;
+            if((a+b)%MOD==c)
+            {
+                // cout << "YES" << endl;
+                cout<<s.substr(0,j)<<"+"<<s.substr(j,mid-j+1)<<"="<<s.substr(mid+1,k-mid)<<endl;
                 return 0;
             }
+            else if((a+b)%MOD<c)
+            {
+                break;
+            }
+            mid--;
         }
     }
-    cout << "NO" << endl;
+    // cout << "NO" << endl;
     return 0;
 }
